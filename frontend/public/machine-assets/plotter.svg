@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520">
+  <rect width="900" height="520" fill="#eef2f6"/>
+  <rect x="130" y="190" width="640" height="32" fill="#2d3643"/>
+  <rect x="160" y="222" width="24" height="160" fill="#556171"/>
+  <rect x="716" y="222" width="24" height="160" fill="#556171"/>
+  <rect x="230" y="140" width="440" height="44" rx="8" fill="#96a4b4"/>
+  <rect x="420" y="184" width="60" height="70" fill="#111827"/>
+  <circle cx="450" cy="256" r="16" fill="#ff5e2e"/>
+  <path d="M450 272 370 340M450 272 530 340" stroke="#ff5e2e" stroke-width="6" opacity=".75"/>
+  <rect x="280" y="320" width="340" height="92" rx="12" fill="#3a4655"/>
+  <circle cx="370" cy="366" r="10" fill="#64d2d9"/>
+  <circle cx="450" cy="366" r="10" fill="#64d2d9"/>
+  <circle cx="530" cy="366" r="10" fill="#64d2d9"/>
+  <text x="450" y="110" text-anchor="middle" font-size="34" fill="#314154" font-family="Arial">PLOTTER</text>
+</svg>

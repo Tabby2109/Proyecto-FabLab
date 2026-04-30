@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520">
+  <rect width="900" height="520" fill="#f7f7f7"/>
+  <rect x="160" y="150" width="580" height="230" rx="12" fill="#e7ebf0" stroke="#cfd5de" stroke-width="8"/>
+  <rect x="200" y="105" width="500" height="105" rx="16" fill="#ffffff" stroke="#d7dde6" stroke-width="8"/>
+  <path d="M210 175h480" stroke="#a9b4c2" stroke-width="6"/>
+  <rect x="260" y="225" width="380" height="115" fill="#d4dbe4"/>
+  <path d="M310 170 310 330M450 170 450 330M590 170 590 330" stroke="#adb8c6" stroke-width="5"/>
+  <text x="450" y="430" text-anchor="middle" font-size="36" fill="#4b5563" font-family="Arial">LASER CUTTER</text>
+</svg>

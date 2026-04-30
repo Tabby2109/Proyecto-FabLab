@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.vite/
+.env
+.env.*
+!.env.example
+.DS_Store
+coverage/
+api/node_modules/
+frontend/node_modules/
+api/prisma/dev.db
+api/prisma/dev.db-journal
+api/uploads/request-files/*
+!api/uploads/request-files/.gitkeep
+*.log

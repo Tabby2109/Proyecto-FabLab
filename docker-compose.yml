@@ -1,0 +1,58 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: fablab-db
+    environment:
+      POSTGRES_DB: fablab
+      POSTGRES_USER: fablab
+      POSTGRES_PASSWORD: fablab
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fablab -d fablab"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: ./api
+    container_name: fablab-api
+    working_dir: /app
+    environment:
+      PORT: 4000
+      DATABASE_URL: postgresql://fablab:fablab@db:5432/fablab?schema=public
+      CLIENT_ORIGIN: http://localhost:5173
+      JWT_SECRET: dev-fablab-secret
+    command: sh -c "npx prisma generate && npx prisma db push --force-reset && npm run seed && npm run dev"
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./api:/app
+      - api_node_modules:/app/node_modules
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: fablab-frontend
+    working_dir: /app
+    environment:
+      VITE_API_URL: http://localhost:4000
+    command: sh -c "npm run dev -- --host 0.0.0.0 --port 5173"
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - frontend_node_modules:/app/node_modules
+    depends_on:
+      - api
+
+volumes:
+  postgres_data:
+  api_node_modules:
+  frontend_node_modules:

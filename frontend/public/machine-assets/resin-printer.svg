@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520">
+  <rect width="900" height="520" fill="#f0f1f5"/>
+  <rect x="260" y="40" width="380" height="420" rx="18" fill="#2b3340"/>
+  <rect x="300" y="78" width="300" height="248" rx="10" fill="#f9a826" opacity=".95"/>
+  <rect x="365" y="90" width="170" height="225" fill="#c77b12" opacity=".34"/>
+  <rect x="325" y="338" width="250" height="66" rx="8" fill="#323b49"/>
+  <rect x="420" y="120" width="60" height="112" fill="#5d4d31"/>
+  <rect x="395" y="214" width="110" height="12" fill="#e5d6b7"/>
+  <text x="450" y="430" text-anchor="middle" font-size="36" fill="#b7c0cc" font-family="Arial">RESINA</text>
+</svg>

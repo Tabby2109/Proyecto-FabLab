@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520">
+  <rect width="900" height="520" fill="#f7f8fb"/>
+  <rect x="180" y="250" width="470" height="150" rx="10" fill="#1473c7"/>
+  <rect x="220" y="205" width="390" height="95" rx="8" fill="#d4dae3"/>
+  <rect x="290" y="215" width="240" height="74" fill="#bcc6d1"/>
+  <rect x="560" y="130" width="90" height="118" rx="8" fill="#1666b4"/>
+  <rect x="500" y="150" width="62" height="102" rx="8" fill="#dce4ec"/>
+  <path d="M220 300H610M220 330H610M220 360H610" stroke="#8090a1" stroke-width="6"/>
+  <path d="M270 205 220 250M630 250 560 180" stroke="#415060" stroke-width="10"/>
+  <text x="415" y="380" text-anchor="middle" font-size="38" fill="#dbeeff" font-family="Arial">CNC</text>
+</svg>

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520">
+  <rect width="900" height="520" fill="#eef2f7"/>
+  <rect x="130" y="260" width="640" height="24" fill="#485465"/>
+  <rect x="160" y="210" width="36" height="170" fill="#5d6878"/>
+  <rect x="704" y="210" width="36" height="170" fill="#5d6878"/>
+  <rect x="200" y="180" width="500" height="20" fill="#4c5667"/>
+  <rect x="430" y="190" width="42" height="80" fill="#1d2430"/>
+  <polygon points="450,270 435,300 465,300" fill="#ffb224"/>
+  <rect x="300" y="305" width="300" height="78" rx="10" fill="#1e2228"/>
+  <path d="M435 300 360 345M465 300 540 345" stroke="#ff6720" stroke-width="5" opacity=".7"/>
+  <text x="450" y="145" text-anchor="middle" font-size="32" fill="#273245" font-family="Arial">METAL LASER</text>
+</svg>

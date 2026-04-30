@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520">
+  <rect width="900" height="520" fill="#f6f7fb"/>
+  <rect x="250" y="70" width="280" height="180" rx="28" fill="#ffffff" stroke="#d8dee9" stroke-width="8"/>
+  <rect x="500" y="90" width="110" height="120" rx="16" fill="#eef1f7" stroke="#d8dee9" stroke-width="8"/>
+  <rect x="310" y="210" width="60" height="110" rx="12" fill="#ffffff" stroke="#d8dee9" stroke-width="8"/>
+  <rect x="392" y="210" width="20" height="110" fill="#adb7c4"/>
+  <rect x="390" y="310" width="170" height="42" rx="8" fill="#f4f4fb" stroke="#cfd5de" stroke-width="6"/>
+  <circle cx="557" cy="145" r="18" fill="#c8d3df"/>
+  <path d="M380 330c40-35 110-35 150 0" fill="none" stroke="#cda3d6" stroke-width="8"/>
+  <text x="445" y="405" text-anchor="middle" font-size="32" fill="#4b5563" font-family="Arial">BORDADORA</text>
+</svg>

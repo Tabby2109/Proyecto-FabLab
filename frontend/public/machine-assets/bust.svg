@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520">
+  <rect width="900" height="520" fill="#b78653"/>
+  <rect x="0" y="340" width="900" height="180" fill="#7c5a3d"/>
+  <path d="M450 110c58 0 104 48 104 112 0 27-8 50-20 70l-12 82H378l-12-82c-12-20-20-43-20-70 0-64 46-112 104-112z" fill="#92a0a8"/>
+  <path d="M404 220c16 18 32 26 46 26s30-8 46-26" fill="none" stroke="#6e7b84" stroke-width="10" stroke-linecap="round"/>
+  <path d="M420 272h60l18 96H402z" fill="#8f9ba1"/>
+  <rect x="360" y="368" width="180" height="72" rx="12" fill="#9cabb2"/>
+  <text x="450" y="470" text-anchor="middle" font-size="32" fill="#f4f4f4" font-family="Arial">BUSTO</text>
+</svg>

@@ -1,0 +1,20 @@
+export const reservationBlocks = [
+  { number: 1, label: "Bloque 1", time: "08:15 - 08:50", hour: 8, minute: 15, endHour: 8, endMinute: 50 },
+  { number: 2, label: "Bloque 2", time: "08:50 - 09:25", hour: 8, minute: 50, endHour: 9, endMinute: 25 },
+  { number: 3, label: "Bloque 3", time: "09:40 - 10:15", hour: 9, minute: 40, endHour: 10, endMinute: 15 },
+  { number: 4, label: "Bloque 4", time: "10:15 - 10:50", hour: 10, minute: 15, endHour: 10, endMinute: 50 },
+  { number: 5, label: "Bloque 5", time: "11:05 - 11:40", hour: 11, minute: 5, endHour: 11, endMinute: 40 },
+  { number: 6, label: "Bloque 6", time: "11:40 - 12:15", hour: 11, minute: 40, endHour: 12, endMinute: 15 },
+  { number: 7, label: "Bloque 7", time: "12:30 - 13:05", hour: 12, minute: 30, endHour: 13, endMinute: 5 },
+  { number: 8, label: "Bloque 8", time: "13:05 - 13:40", hour: 13, minute: 5, endHour: 13, endMinute: 40 },
+  { number: 9, label: "Bloque 9", time: "14:40 - 15:15", hour: 14, minute: 40, endHour: 15, endMinute: 15 },
+  { number: 10, label: "Bloque 10", time: "15:15 - 15:50", hour: 15, minute: 15, endHour: 15, endMinute: 50 },
+  { number: 11, label: "Bloque 11", time: "16:05 - 16:40", hour: 16, minute: 5, endHour: 16, endMinute: 40 },
+  { number: 12, label: "Bloque 12", time: "16:40 - 17:15", hour: 16, minute: 40, endHour: 17, endMinute: 15 },
+  { number: 13, label: "Bloque 13", time: "17:30 - 18:05", hour: 17, minute: 30, endHour: 18, endMinute: 5 },
+  { number: 14, label: "Bloque 14", time: "18:05 - 18:40", hour: 18, minute: 5, endHour: 18, endMinute: 40 },
+  { number: 15, label: "Bloque 15", time: "18:55 - 19:30", hour: 18, minute: 55, endHour: 19, endMinute: 30 },
+  { number: 16, label: "Bloque 16", time: "19:30 - 20:05", hour: 19, minute: 30, endHour: 20, endMinute: 5 },
+  { number: 17, label: "Bloque 17", time: "20:20 - 20:55", hour: 20, minute: 20, endHour: 20, endMinute: 55 },
+  { number: 18, label: "Bloque 18", time: "20:55 - 21:30", hour: 20, minute: 55, endHour: 21, endMinute: 30 }
+] as const;

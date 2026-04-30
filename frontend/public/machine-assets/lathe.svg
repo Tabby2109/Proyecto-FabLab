@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520">
+  <rect width="900" height="520" fill="#f8fbff"/>
+  <rect x="110" y="315" width="680" height="110" rx="10" fill="#0f6db2"/>
+  <rect x="125" y="240" width="650" height="84" rx="8" fill="#d7dde5"/>
+  <rect x="150" y="135" width="120" height="190" rx="6" fill="#d2d8df"/>
+  <rect x="298" y="250" width="250" height="22" fill="#677384"/>
+  <circle cx="215" cy="190" r="38" fill="#c6ced8"/>
+  <circle cx="215" cy="190" r="10" fill="#7d8aa0"/>
+  <circle cx="612" cy="258" r="48" fill="#c9d2dd"/>
+  <rect x="535" y="205" width="40" height="125" rx="6" fill="#e3e9ef"/>
+  <text x="450" y="388" text-anchor="middle" font-size="34" fill="#dcecff" font-family="Arial">TORNO</text>
+</svg>

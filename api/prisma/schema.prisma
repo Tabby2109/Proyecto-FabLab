@@ -1,0 +1,511 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  USER
+  STAFF
+  ADMIN
+}
+
+enum DocumentType {
+  RUT
+  PASSPORT
+  DNI
+  OTHER
+}
+
+enum Sex {
+  FEMALE
+  MALE
+  NON_BINARY
+  PREFER_NOT_TO_SAY
+}
+
+enum MachineCategory {
+  PRINT_3D
+  LASER
+  CNC
+  ELECTRONICS
+  VINYL
+}
+
+enum MachineStatus {
+  AVAILABLE
+  MAINTENANCE
+  OFFLINE
+}
+
+enum RequestStatus {
+  DRAFT
+  PENDING_REVIEW
+  CHANGES_REQUESTED
+  IN_QUOTATION
+  QUOTED
+  APPROVED
+  IN_PROGRESS
+  READY_FOR_PICKUP
+  COMPLETED
+  REJECTED
+}
+
+enum CommentVisibility {
+  INTERNAL
+  PUBLIC
+}
+
+enum RequestEventType {
+  CREATED
+  STATUS_CHANGED
+  COMMENT_ADDED
+  SENT_TO_QUOTATION
+  ACCEPTED
+  CORRECTION_REQUESTED
+  REJECTED
+  ASSIGNED
+  DUE_DATE_CHANGED
+  STARTED_PRODUCTION
+  MARKED_READY
+  COMPLETED
+}
+
+enum QuotationStatus {
+  NOT_REQUESTED
+  PENDING
+  READY
+  ACCEPTED
+  REJECTED
+  EXPIRED
+}
+
+enum MaterialMovementType {
+  IN
+  OUT
+  RESERVE
+  RELEASE
+  ADJUSTMENT
+}
+
+enum ReservationStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+enum ProjectStatus {
+  CREATED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum ProjectType {
+  PRINT_3D
+  LASER_CUT
+  CNC
+  ELECTRONICS
+  PROTOTYPE
+  OTHER
+}
+
+enum ProjectScope {
+  INDIVIDUAL
+  GROUP
+}
+
+enum QuotationRecordStatus {
+  DRAFT
+  READY
+  ACCEPTED
+  REJECTED
+  EXPIRED
+}
+
+enum QuotationItemType {
+  SETUP
+  MACHINE
+  MATERIAL
+  EXTRA
+}
+
+enum ReservationEventType {
+  CREATED
+  UPDATED
+  STATUS_CHANGED
+  CANCELLED
+  COMPLETED
+}
+
+enum NotificationType {
+  REQUEST_STATUS_CHANGED
+  QUOTATION_READY
+  RESERVATION_UPCOMING
+  CORRECTION_REQUIRED
+  PASSWORD_RESET
+  SYSTEM
+}
+
+model User {
+  id                String           @id @default(cuid())
+  name              String
+  email             String           @unique
+  passwordHash      String
+  role              UserRole         @default(USER)
+  profileCompleted  Boolean          @default(false)
+  firstName         String?
+  middleName        String?
+  lastName          String?
+  maternalLastName  String?
+  documentType      DocumentType?
+  documentNumber    String?          @unique
+  career            String?
+  entryYear         Int?
+  birthDate         DateTime?
+  sex               Sex?
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  projects          Project[]
+  projectFiles      ProjectFile[]      @relation("UploadedProjectFiles")
+  projectMemberships ProjectMember[]   @relation("ProjectMemberOwner")
+  requests          ServiceRequest[]
+  requestFilesUploaded RequestFile[]   @relation("UploadedRequestFiles")
+  reservations      Reservation[]
+  reservationEvents ReservationEvent[] @relation("ReservationEventActors")
+  requestComments   RequestComment[]
+  requestEvents     RequestEvent[]
+  quotationsPrepared Quotation[]        @relation("PreparedQuotations")
+  quotationsCreated Quotation[]        @relation("CreatedQuotations")
+  materialMovements MaterialMovement[] @relation("ActorMaterialMovements")
+  createdMaterialMovements MaterialMovement[] @relation("CreatedByMaterialMovements")
+  assignedRequests  ServiceRequest[] @relation("AssignedStaffRequests")
+  createdMaintenanceWindows MachineMaintenanceWindow[] @relation("CreatedMaintenanceWindows")
+  notifications     Notification[]
+  auditLogs         AuditLog[]       @relation("AuditActorLogs")
+  passwordResetTokens PasswordResetToken[]
+}
+
+model Project {
+  id              String        @id @default(cuid())
+  name            String
+  description     String
+  repositoryUrl   String?
+  courseName      String?
+  professorName   String?
+  academicPeriod  String?
+  teamMode        ProjectScope  @default(INDIVIDUAL)
+  status          ProjectStatus @default(CREATED)
+  tags            String[]      @default([])
+  projectType     ProjectType
+  scope           ProjectScope  @default(INDIVIDUAL)
+  attachmentNames String[]
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  finishedAt      DateTime?
+  ownerId         String
+  owner           User          @relation(fields: [ownerId], references: [id])
+  members         ProjectMember[]
+  files           ProjectFile[]
+  requests        ServiceRequest[]
+  reservations    Reservation[]
+}
+
+model Machine {
+  id                 String           @id @default(cuid())
+  name               String
+  slug               String           @unique
+  description        String
+  category           MachineCategory
+  status             MachineStatus    @default(AVAILABLE)
+  hourlyRate         Decimal          @db.Decimal(10, 2)
+  setupMinutes       Int              @default(15)
+  maxDurationMinutes Int              @default(240)
+  supportedFormats   String[]
+  location           String?
+  minBlocks          Int?
+  maxBlocks          Int?
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  machineTypeId      String?
+  machineType        MachineType?     @relation(fields: [machineTypeId], references: [id])
+  requests           ServiceRequest[]
+  reservations       Reservation[]
+  maintenanceWindows MachineMaintenanceWindow[]
+}
+
+model MachineType {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  summary     String
+  description String
+  assetName   String
+  assetPath   String
+  isPublished Boolean   @default(true)
+  minReservationBlocks Int @default(1)
+  maxReservationBlocks Int @default(8)
+  reservationRequiresConsecutive Boolean @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  machines    Machine[]
+}
+
+model Material {
+  id             String           @id @default(cuid())
+  name           String
+  slug           String           @unique
+  unit           String
+  stockQuantity  Decimal          @db.Decimal(10, 2)
+  reservedQuantity Decimal        @default(0) @db.Decimal(10, 2)
+  stockThreshold Decimal          @db.Decimal(10, 2)
+  pricePerUnit   Decimal          @db.Decimal(10, 2)
+  isActive       Boolean          @default(true)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  requests       ServiceRequest[]
+  movements      MaterialMovement[]
+}
+
+model ServiceRequest {
+  id                       String        @id @default(cuid())
+  title                    String
+  description              String
+  notes                    String?
+  status                   RequestStatus @default(PENDING_REVIEW)
+  quotationStatus          QuotationStatus @default(NOT_REQUESTED)
+  requestedDate            DateTime
+  estimatedDurationMinutes Int
+  estimatedCost            Decimal       @db.Decimal(10, 2)
+  quantity                 Int           @default(1)
+  materialUnitsRequested   Decimal       @default(1) @db.Decimal(10, 2)
+  inventoryReservedAt      DateTime?
+  commitmentDate           DateTime?
+  dueDate                  DateTime?
+  uploadedFileUrl          String?
+  createdAt                DateTime      @default(now())
+  updatedAt                DateTime      @updatedAt
+  projectId                String
+  project                  Project       @relation(fields: [projectId], references: [id])
+  requesterId              String?
+  requester                User?         @relation(fields: [requesterId], references: [id])
+  machineId                String
+  machine                  Machine       @relation(fields: [machineId], references: [id])
+  materialId               String?
+  material                 Material?     @relation(fields: [materialId], references: [id])
+  assignedStaffId          String?
+  assignedStaff            User?         @relation("AssignedStaffRequests", fields: [assignedStaffId], references: [id])
+  requestFiles             RequestFile[]
+  comments                 RequestComment[]
+  events                   RequestEvent[]
+  quotation                Quotation?
+  reservations             Reservation[]
+  materialMovements        MaterialMovement[]
+  relatedMaterialMovements MaterialMovement[] @relation("RelatedRequestMaterialMovements")
+}
+
+model RequestFile {
+  id           String         @id @default(cuid())
+  originalName String
+  storedName   String
+  mimeType     String
+  extension    String
+  sizeBytes    Int
+  versionLabel String?
+  publicUrl    String
+  createdAt    DateTime       @default(now())
+  uploadedById String?
+  uploadedBy   User?          @relation("UploadedRequestFiles", fields: [uploadedById], references: [id])
+  requestId    String
+  request      ServiceRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+}
+
+model RequestComment {
+  id         String            @id @default(cuid())
+  body       String
+  visibility CommentVisibility @default(PUBLIC)
+  createdAt  DateTime          @default(now())
+  requestId  String
+  request    ServiceRequest    @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  authorId   String?
+  author     User?             @relation(fields: [authorId], references: [id])
+}
+
+model RequestEvent {
+  id         String           @id @default(cuid())
+  type       RequestEventType
+  summary    String
+  detail     String?
+  createdAt  DateTime         @default(now())
+  requestId  String
+  request    ServiceRequest   @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  actorId    String?
+  actor      User?            @relation(fields: [actorId], references: [id])
+}
+
+model Quotation {
+  id               String         @id @default(cuid())
+  status           QuotationRecordStatus @default(READY)
+  setupCost        Decimal        @db.Decimal(10, 2)
+  machineCost      Decimal        @db.Decimal(10, 2)
+  materialCost     Decimal        @db.Decimal(10, 2)
+  extraCost        Decimal        @default(0) @db.Decimal(10, 2)
+  totalCost        Decimal        @db.Decimal(10, 2)
+  quantity         Int
+  estimatedMinutes Int
+  notes            String?
+  validUntil       DateTime?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  requestId        String         @unique
+  request          ServiceRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  createdById      String?
+  createdBy        User?          @relation("CreatedQuotations", fields: [createdById], references: [id])
+  preparedById     String?
+  preparedBy       User?          @relation("PreparedQuotations", fields: [preparedById], references: [id])
+  items            QuotationItem[]
+}
+
+model Reservation {
+  id           String            @id @default(cuid())
+  title        String
+  startAt      DateTime
+  endAt        DateTime
+  status       ReservationStatus @default(PENDING)
+  notes        String?
+  description  String?
+  blockNumbers Int[]
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  userId       String?
+  user         User?             @relation(fields: [userId], references: [id])
+  machineId    String
+  machine      Machine           @relation(fields: [machineId], references: [id])
+  projectId    String?
+  project      Project?          @relation(fields: [projectId], references: [id])
+  requestId    String?
+  request      ServiceRequest?   @relation(fields: [requestId], references: [id])
+  events       ReservationEvent[]
+}
+
+model MachineMaintenanceWindow {
+  id        String   @id @default(cuid())
+  startAt   DateTime
+  endAt     DateTime
+  reason    String
+  createdById String?
+  createdBy User?    @relation("CreatedMaintenanceWindows", fields: [createdById], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  machineId String
+  machine   Machine  @relation(fields: [machineId], references: [id], onDelete: Cascade)
+}
+
+model MaterialMovement {
+  id                     String               @id @default(cuid())
+  type                   MaterialMovementType
+  quantity               Decimal              @db.Decimal(10, 2)
+  reason                 String?
+  resultingStockQuantity Decimal              @db.Decimal(10, 2)
+  resultingReservedQuantity Decimal           @db.Decimal(10, 2)
+  createdAt              DateTime             @default(now())
+  materialId             String
+  material               Material             @relation(fields: [materialId], references: [id], onDelete: Cascade)
+  relatedRequestId       String?
+  relatedRequest         ServiceRequest?      @relation("RelatedRequestMaterialMovements", fields: [relatedRequestId], references: [id], onDelete: SetNull)
+  requestId              String?
+  request                ServiceRequest?      @relation(fields: [requestId], references: [id], onDelete: SetNull)
+  createdById            String?
+  createdBy              User?                @relation("CreatedByMaterialMovements", fields: [createdById], references: [id])
+  actorId                String?
+  actor                  User?                @relation("ActorMaterialMovements", fields: [actorId], references: [id])
+}
+
+model ProjectMember {
+  id            String   @id @default(cuid())
+  name          String
+  email         String
+  roleInProject String?
+  isOwner       Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  projectId     String
+  project       Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  ownerUserId   String?
+  ownerUser     User?    @relation("ProjectMemberOwner", fields: [ownerUserId], references: [id])
+}
+
+model ProjectFile {
+  id           String   @id @default(cuid())
+  originalName String
+  storedName   String
+  mimeType     String
+  extension    String
+  sizeBytes    Int
+  versionLabel String?
+  createdAt    DateTime @default(now())
+  projectId    String
+  project      Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  uploadedById String?
+  uploadedBy   User?    @relation("UploadedProjectFiles", fields: [uploadedById], references: [id])
+}
+
+model QuotationItem {
+  id          String            @id @default(cuid())
+  label       String
+  quantity    Decimal           @default(1) @db.Decimal(10, 2)
+  unitPrice   Decimal           @db.Decimal(10, 2)
+  totalPrice  Decimal           @db.Decimal(10, 2)
+  itemType    QuotationItemType
+  quotationId String
+  quotation   Quotation         @relation(fields: [quotationId], references: [id], onDelete: Cascade)
+}
+
+model ReservationEvent {
+  id            String               @id @default(cuid())
+  type          ReservationEventType
+  payloadJson   String?
+  createdAt     DateTime             @default(now())
+  reservationId String
+  reservation   Reservation          @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+  actorId       String?
+  actor         User?                @relation("ReservationEventActors", fields: [actorId], references: [id])
+}
+
+model Notification {
+  id            String           @id @default(cuid())
+  type          NotificationType
+  title         String
+  body          String
+  linkUrl       String?
+  metadataJson  String?
+  emailSentAt   DateTime?
+  readAt        DateTime?
+  createdAt     DateTime         @default(now())
+  userId        String
+  user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model PasswordResetToken {
+  id         String   @id @default(cuid())
+  tokenHash  String   @unique
+  expiresAt  DateTime
+  usedAt     DateTime?
+  createdAt  DateTime @default(now())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model AuditLog {
+  id          String   @id @default(cuid())
+  entityType  String
+  entityId    String
+  action      String
+  payloadJson String?
+  createdAt   DateTime @default(now())
+  actorId     String?
+  actor       User?    @relation("AuditActorLogs", fields: [actorId], references: [id])
+}

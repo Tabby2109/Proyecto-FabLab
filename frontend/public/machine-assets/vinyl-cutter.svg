@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0b5a6f"/>
+      <stop offset="100%" stop-color="#173047"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="520" fill="url(#bg)"/>
+  <circle cx="160" cy="120" r="70" fill="#eed36c" opacity=".9"/>
+  <circle cx="260" cy="150" r="86" fill="#6dd3d9" opacity=".82"/>
+  <circle cx="370" cy="110" r="62" fill="#b67cb5" opacity=".72"/>
+  <rect x="140" y="300" width="620" height="120" rx="18" fill="#e8edf2"/>
+  <rect x="170" y="330" width="560" height="58" rx="10" fill="#c7d0da"/>
+  <rect x="120" y="285" width="42" height="145" rx="8" fill="#ffffff"/>
+  <rect x="734" y="306" width="70" height="114" rx="8" fill="#e4c59a"/>
+  <text x="450" y="360" text-anchor="middle" font-size="40" fill="#7f8b99" font-family="Arial">CUTTER</text>
+</svg>
