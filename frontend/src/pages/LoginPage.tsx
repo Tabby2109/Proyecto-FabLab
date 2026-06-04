@@ -6,7 +6,7 @@ import { useAuth } from "../context/AuthContext";
 export function LoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
-  const [email, setEmail] = useState("tabata.ahumada@usm.cl");
+  const [email, setEmail] = useState("usuario@usm.cl");
   const [password, setPassword] = useState("123fablab..");
   const [error, setError] = useState<string | null>(null);
   const [usmHint, setUsmHint] = useState<string | null>(null);

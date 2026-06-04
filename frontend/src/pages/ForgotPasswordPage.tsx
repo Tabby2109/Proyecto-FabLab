@@ -4,7 +4,7 @@ import { BrandLogo } from "../components/BrandLogo";
 import { api } from "../lib/api";
 
 export function ForgotPasswordPage() {
-  const [email, setEmail] = useState("tabata.ahumada@usm.cl");
+  const [email, setEmail] = useState("usuario@usm.cl");
   const [message, setMessage] = useState<string | null>(null);
   const [debugToken, setDebugToken] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);

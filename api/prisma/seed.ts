@@ -138,20 +138,20 @@ async function main() {
 
   const users = await Promise.all([
     prisma.user.upsert({
-      where: { email: "tabata.ahumada@usm.cl" },
+      where: { email: "usuario@usm.cl" },
       update: {
-        name: "Tabata Ahumada",
+        name: "Usuario Demo",
         passwordHash: userPasswordHash,
         role: "USER"
       },
       create: {
-        name: "Tabata Ahumada",
-        email: "tabata.ahumada@usm.cl",
+        name: "Usuario Demo",
+        email: "usuario@usm.cl",
         passwordHash: userPasswordHash,
         role: "USER",
-        firstName: "Tabata",
+        firstName: "Usuario",
         middleName: null,
-        lastName: "Ahumada",
+        lastName: "Demo",
         maternalLastName: null,
         documentType: "RUT",
         documentNumber: "20.790.136-9",
@@ -379,8 +379,8 @@ async function main() {
       {
         id: "seed-project-member-1",
         projectId: "seed-project-fablab-1",
-        name: "Tabata Ahumada",
-        email: "tabata.ahumada@usm.cl",
+        name: "Usuario Demo",
+        email: "usuario@usm.cl",
         roleInProject: "Tesista / coordinacion",
         isOwner: true,
         ownerUserId: users[0].id

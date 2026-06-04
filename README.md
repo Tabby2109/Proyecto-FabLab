@@ -94,7 +94,7 @@ Si mas adelante quieres persistir cambios manuales entre reinicios, debes quitar
 
 ### Usuario
 
-- email: `tabata.ahumada@usm.cl`
+- email: `usuario@usm.cl`
 - clave: `123fablab..`
 
 ### Staff
