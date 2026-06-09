@@ -1,7 +1,7 @@
 import { AlertCircle, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { api, Reservation, ReservationSchedule, ServiceRequestDetail } from "../lib/api";
+import { api, Reservation, ReservationSchedule, ServiceRequest, ServiceRequestDetail } from "../lib/api";
 import { reservationBlocks } from "../lib/reservationBlocks";
 import { buildReservationPayload, formatDayLabel, shiftDate, toDateInputValue } from "../lib/reservationUtils";
 
@@ -14,10 +14,16 @@ type ReservationFormState = {
   blockNumbers: number[];
 };
 
+function canRequestBeReserved(request: ServiceRequest) {
+  return request.status === "APPROVED" && (request.quotationStatus === "ACCEPTED" || (request.quotationStatus === "NOT_REQUESTED" && !request.quotation));
+}
+
 export function NewReservationPage() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const requestId = searchParams.get("requestId") ?? "";
+  const [availableRequests, setAvailableRequests] = useState<ServiceRequest[]>([]);
+  const [loadingRequests, setLoadingRequests] = useState(false);
   const [requestDetail, setRequestDetail] = useState<ServiceRequestDetail | null>(null);
   const [schedule, setSchedule] = useState<ReservationSchedule | null>(null);
   const [form, setForm] = useState<ReservationFormState | null>(null);
@@ -29,10 +35,22 @@ export function NewReservationPage() {
 
   useEffect(() => {
     if (!requestId) {
-      setError("Debes ingresar desde una solicitud aprobada.");
+      setLoadingRequests(true);
+      setError(null);
+      setRequestDetail(null);
+      setForm(null);
+      setSchedule(null);
+
+      api
+        .getRequests()
+        .then((requests) => setAvailableRequests(requests.filter(canRequestBeReserved)))
+        .catch((err: Error) => setError(err.message))
+        .finally(() => setLoadingRequests(false));
       return;
     }
 
+    setError(null);
+    setMessage(null);
     api
       .getRequestById(requestId)
       .then((detail) => {
@@ -84,10 +102,7 @@ export function NewReservationPage() {
       return false;
     }
 
-    return (
-      requestDetail.status === "APPROVED" &&
-      (requestDetail.quotationStatus === "ACCEPTED" || (requestDetail.quotationStatus === "NOT_REQUESTED" && !requestDetail.quotation))
-    );
+    return canRequestBeReserved(requestDetail);
   }, [requestDetail]);
 
   const selectedDay = useMemo(() => schedule?.days.find((day) => day.date === form?.date) ?? null, [form?.date, schedule]);
@@ -191,6 +206,48 @@ export function NewReservationPage() {
     } finally {
       setSaving(false);
     }
+  }
+
+  if (!requestId) {
+    return (
+      <div className="portal-page reservation-edit-page reservation-create-page">
+        <div className="breadcrumb">Inicio &gt; reservas &gt; nueva</div>
+        <h1 className="page-title">Crear reserva</h1>
+
+        <section className="content-card reservation-request-picker">
+          <h2>Selecciona una solicitud aprobada</h2>
+          <p className="inline-note">Las reservas se crean desde solicitudes aprobadas. Si una solicitud tiene cotizacion, primero debe estar aceptada.</p>
+
+          {loadingRequests ? <p>Cargando solicitudes disponibles...</p> : null}
+          {error ? <p className="feedback-error">{error}</p> : null}
+
+          {!loadingRequests && availableRequests.length === 0 ? (
+            <div className="request-machine-hint request-material-warning">
+              <strong>No hay solicitudes listas para reservar</strong>
+              <span>Crea una solicitud, espera su aprobacion y acepta la cotizacion cuando corresponda.</span>
+              <button type="button" className="primary-button" onClick={() => navigate("/nueva-solicitud")}>
+                Nueva solicitud
+              </button>
+            </div>
+          ) : null}
+
+          {availableRequests.length > 0 ? (
+            <div className="reservation-request-list">
+              {availableRequests.map((request) => (
+                <button key={request.id} type="button" className="reservation-request-option" onClick={() => setSearchParams({ requestId: request.id })}>
+                  <strong>{request.title}</strong>
+                  <span>{request.project.name}</span>
+                  <span>{request.machine.name}</span>
+                  <small>
+                    {request.estimatedDurationMinutes} min estimados · {request.quantity} unidad(es)
+                  </small>
+                </button>
+              ))}
+            </div>
+          ) : null}
+        </section>
+      </div>
+    );
   }
 
   if (error && !form) {

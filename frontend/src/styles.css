@@ -1250,6 +1250,49 @@ button {
   margin-bottom: 1.6rem;
 }
 
+.reservation-request-picker {
+  max-width: 760px;
+  display: grid;
+  gap: 1rem;
+}
+
+.reservation-request-picker h2 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 500;
+}
+
+.reservation-request-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.reservation-request-option {
+  border: 1px solid #dce4ec;
+  border-radius: 8px;
+  background: #ffffff;
+  display: grid;
+  gap: 0.25rem;
+  padding: 1rem;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(13, 35, 56, 0.08);
+}
+
+.reservation-request-option:hover {
+  border-color: var(--portal-blue);
+}
+
+.reservation-request-option strong {
+  color: #13263d;
+  font-size: 1rem;
+}
+
+.reservation-request-option span,
+.reservation-request-option small {
+  color: #5f6d80;
+}
+
 .reservation-week-page {
   max-width: 1220px;
 }

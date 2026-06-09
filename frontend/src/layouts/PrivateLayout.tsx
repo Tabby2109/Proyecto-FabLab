@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Bell, CalendarPlus2, ClipboardList, FileText, FolderKanban, Home, LayoutDashboard, LogOut, Menu, Settings, Settings2, Shield, UserCircle2, Wrench } from "lucide-react";
+import { Bell, CalendarPlus2, ClipboardList, FileText, FolderKanban, Home, LayoutDashboard, LogOut, Menu, PlusSquare, Settings, Settings2, Shield, UserCircle2, Wrench } from "lucide-react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { BrandLogo } from "../components/BrandLogo";
 import { useAuth } from "../context/AuthContext";
@@ -10,7 +10,8 @@ const navigation = [
   { to: "/mis-solicitudes", label: "Mis solicitudes", icon: FileText },
   { to: "/mis-reservas", label: "Mis reservas", icon: CalendarPlus2 },
   { to: "/maquinas", label: "Maquinas", icon: Wrench },
-  { to: "/nueva-solicitud", label: "Nueva solicitud", icon: Settings2 }
+  { to: "/nueva-solicitud", label: "Nueva solicitud", icon: Settings2 },
+  { to: "/mis-reservas/nueva", label: "Crear reserva", icon: PlusSquare }
 ];
 
 export function PrivateLayout() {

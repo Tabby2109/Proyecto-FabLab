@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowUp, ChevronDown, ChevronLeft, ChevronRight, Pencil, Search, SlidersHorizontal, X } from "lucide-react";
+import { ArrowDown, ArrowUp, ChevronDown, ChevronLeft, ChevronRight, Pencil, Plus, Search, SlidersHorizontal, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api, Reservation } from "../lib/api";
@@ -134,6 +134,11 @@ export function ReservationsPage() {
         </div>
 
         <div className="projects-actions">
+          <button type="button" className="projects-create-button" onClick={() => navigate("/mis-reservas/nueva")}>
+            <Plus size={18} />
+            <span>Crear</span>
+          </button>
+
           <div className="projects-sort" ref={sortMenuRef}>
             <button type="button" className="projects-sort-button" onClick={() => setSortMenuOpen((value) => !value)}>
               <span>Ordenar</span>
